@@ -1,266 +1,813 @@
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Syl's Birthday</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Syl's Birthday</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #d4789d;
+      --sage: #9fbeac;
+      --periwinkle: #b5b4d6;
+      --peony: #e5b4d4;
+      --rosewood: #a46182;
+      --granite: #405d58;
+      --alabaster: #f4eeee;
+    }
 
-<style>
-/* ============================================================
-   COLORS & TYPE
-   ============================================================ */
+    * {
+      box-sizing: border-box;
+    }
 
-:root {
-  --bg: #F6E9D8;
-  --bg-deep: #F0D9B8;
-  --gold: #D99A3D;
-  --cream: #4A3B2A;
-  --rose: #E0A6B0;
-  --lav: #B9A8D9;
-  --sage: #7C9470;
-  --panel: #FFF8EE;
-  color-scheme: light;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--granite);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(
+          circle at 12% 18%,
+          rgba(219, 178, 186, 0.25) 0 2px,
+          transparent 3px
+        ),
+        radial-gradient(
+          circle at 82% 12%,
+          rgba(154, 163, 136, 0.25) 0 2px,
+          transparent 3px
+        ),
+        linear-gradient(135deg, #dddadb, #f3e8e8);
+      background-size: 34px 34px, 48px 48px, auto;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.14;
+      background-image:
+        radial-gradient(
+          rgba(64, 93, 88, 0.35) 0.6px,
+          transparent 0.6px
+        );
+      background-size: 5px 5px;
+    }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg);
-}
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(100% - 32px, 768px);
+      margin: 0 auto;
+      padding: 32px 0;
+    }
 
-body {
-  font-family: 'Inter', sans-serif;
-  color: var(--cream);
-  overflow-x: hidden;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
 
-h1,
-h2,
-.display {
-  font-family: 'Fraunces', serif;
-}
+    .eyebrow {
+      margin: 0;
+      color: var(--rosewood);
+      font: 700 12px/1.2 Arial, sans-serif;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+    h1 {
+      margin: 10px 0 12px;
+      color: var(--granite);
+      font-size: clamp(38px, 8vw, 60px);
+      line-height: 1.05;
+      font-weight: 700;
+    }
 
-.header {
-  text-align: center;
-  padding: 2.2rem 1rem 1rem;
-}
+    .date {
+      margin: 0;
+      font: 15px/1.6 Arial, sans-serif;
+    }
 
-.header h1 {
-  font-size: clamp(1.8rem, 6vw, 2.6rem);
-  margin: 0 0 0.3rem;
-  font-weight: 600;
-}
+    .scene {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1;
+      border-radius: 28px;
+      background:
+        #cbd8ca
+        url("/scene/syl-woodland.png")
+        center / cover
+        no-repeat;
+      box-shadow: 0 18px 45px rgba(64, 93, 88, 0.22);
+      outline: 1px solid rgba(64, 93, 88, 0.15);
+    }
 
-.header p {
-  margin: 0;
-  color: var(--gold);
-  letter-spacing: 0.02em;
-  font-size: 0.95rem;
-}
+    .hotspot {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
 
-.header .kicker {
-  display: block;
-  font-size: 0.75rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--sage);
-  margin-bottom: 0.4rem;
-}
+    .marker {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      border-radius: 50%;
+      color: white;
+      font: 24px/1 Arial, sans-serif;
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+      animation: bob 3s ease-in-out infinite;
+    }
 
-/* ============================================================
-   MAIN SCENE
-   ============================================================ */
+    .marker::before {
+      content: "";
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: inherit;
+      animation: ping 2.4s infinite;
+      z-index: -1;
+    }
 
-.scene-wrap {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 0 1rem 2rem;
-}
+    .hotspot.seen .marker::before {
+      display: none;
+    }
 
-#scene {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  border-radius: 18px;
-  overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 82% 14%,
-      #FFF3D666 0%,
-      transparent 22%
-    ),
-    linear-gradient(
-      180deg,
-      #FBE6C2 0%,
-      var(--bg) 45%,
-      var(--bg-deep) 100%
-    );
-  box-shadow: 0 20px 50px -25px #7a5a2a55;
-}
+    .hotspot:hover .marker,
+    .hotspot:focus-visible .marker {
+      transform: translate(-50%, -50%) scale(1.12);
+    }
 
-/* Simple placeholder illustration pieces */
+    .tooltip {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, 22px);
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--granite);
+      font: 700 12px Arial, sans-serif;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s ease;
+    }
 
-.sun {
-  position: absolute;
-  top: 9%;
-  right: 16%;
-  width: 13%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #FFE9B8;
-  box-shadow: 0 0 40px 10px #FFE9B899;
-}
+    .hotspot:hover .tooltip,
+    .hotspot:focus-visible .tooltip {
+      opacity: 1;
+      transform: translate(-50%, 27px);
+    }
 
-.foliage {
-  position: absolute;
-  top: -4%;
-  left: -4%;
-  right: -4%;
-  height: 22%;
-  background: var(--sage);
-  opacity: 0.55;
-  border-radius: 0 0 60% 60% / 0 0 100% 100%;
-}
+    .progress {
+      margin: 16px 0 0;
+      text-align: center;
+      font: 14px/1.5 Arial, sans-serif;
+    }
 
-.drape {
-  position: absolute;
-  top: 0;
-  width: 16%;
-  height: 60%;
-  background: linear-gradient(
-    180deg,
-    var(--lav)aa 0%,
-    var(--rose)88 55%,
-    transparent 100%
-  );
-  border-radius: 0 0 50% 50%;
-  opacity: 0.75;
-}
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(64, 93, 88, 0.58);
+      animation: fade 0.2s ease;
+    }
 
-.drape.d1 {
-  left: 14%;
-}
+    .modal {
+      width: min(100%, 520px);
+      max-height: min(720px, 90vh);
+      overflow: auto;
+      padding: 28px;
+      border: 1px solid rgba(159, 190, 172, 0.7);
+      border-radius: 26px;
+      background: var(--alabaster);
+      box-shadow: 0 24px 70px rgba(34, 55, 52, 0.3);
+      animation: rise 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-.drape.d2 {
-  left: 38%;
-  height: 48%;
-}
+    .modal-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
 
-.drape.d3 {
-  right: 20%;
-}
+    .icon {
+      display: grid;
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      place-items: center;
+      border-radius: 17px;
+      color: white;
+      font-size: 24px;
+    }
 
-.ground {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 20%;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    #C9A15E33
-  );
-}
+    .modal h2 {
+      margin: 3px 0 0;
+      font-size: 32px;
+      line-height: 1.05;
+    }
 
-/* ============================================================
-   HOTSPOTS
-   ============================================================ */
+    .modal .eyebrow {
+      letter-spacing: 0.18em;
+    }
 
-.hotspot {
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  border: none;
-  background: radial-gradient(
-    circle,
-    #FFF8E6 0%,
-    #D99A3D77 55%,
-    transparent 75%
-  );
-  cursor: pointer;
-  animation: pulse 2.6s ease-in-out infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  -webkit-tap-highlight-color: transparent;
-}
+    .close {
+      margin-left: auto;
+      border: 0;
+      color: var(--granite);
+      background: transparent;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
 
-.hotspot:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-}
+    .body {
+      margin: 22px 0;
+      font: 15px/1.6 Arial, sans-serif;
+    }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
+    dl {
+      margin: 0;
+    }
 
-  50% {
-    opacity: 1;
-  }
-}
+    .row {
+      padding: 12px 0;
+      border-top: 1px solid rgba(159, 190, 172, 0.55);
+    }
 
-/* ============================================================
-   MODAL / PANEL
-   ============================================================ */
+    dt {
+      color: var(--rosewood);
+      font: 700 11px Arial, sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
 
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: #0B140Fcc;
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: 50;
-  padding: 0;
-}
+    dd {
+      margin: 4px 0 0;
+      font: 16px/1.4 Arial, sans-serif;
+    }
 
-.overlay.open {
-  display: flex;
-}
+    .action,
+    .back,
+    .poll-option {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 16px;
+      color: white;
+      background: var(--granite);
+      font: 700 14px Arial, sans-serif;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
-@media (min-width: 640px) {
-  .overlay {
-    align-items: center;
-  }
-}
+    .back {
+      margin-top: 22px;
+      background: var(--rosewood);
+    }
 
-.panel {
-  background: var(--panel);
-  width: 100%;
-  max-width: 460px;
-  border-radius: 20px 20px 0 0;
-  padding: 1.6rem 1.5rem
-    calc(1.6rem + env(safe-area-inset-bottom, 0px));
-  transform: translateY(30px);
-  opacity: 0;
-  transition: 0.25s ease;
-  max-height: 80vh;
-  overflow-y: auto;
-}
+    .poll {
+      margin-top: 20px;
+    }
 
-@media (min-width: 640px) {
-  .panel {
-    border-radius:
+    .poll-title {
+      margin: 0 0 10px;
+      font: 700 14px Arial, sans-serif;
+    }
+
+    .poll-option {
+      margin-top: 8px;
+      color: var(--granite);
+      background: #e5b4d4;
+      text-align: left;
+    }
+
+    .poll-option.selected {
+      color: white;
+      background: var(--rosewood);
+    }
+
+    .note {
+      margin: 12px 0 0;
+      font: italic 13px/1.5 Arial, sans-serif;
+    }
+
+    @keyframes ping {
+      0% {
+        transform: scale(1);
+        opacity: 0.55;
+      }
+
+      70%,
+      100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+    }
+
+    @keyframes bob {
+      0%,
+      100% {
+        transform: translate(-50%, -50%);
+      }
+
+      50% {
+        transform: translate(-50%, calc(-50% - 3px));
+      }
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        width: min(100% - 20px, 768px);
+        padding: 22px 0;
+      }
+
+      header {
+        margin-bottom: 18px;
+      }
+
+      .scene {
+        border-radius: 20px;
+      }
+
+      .modal {
+        align-self: end;
+        max-height: 86vh;
+        padding: 24px 20px;
+        border-radius: 24px 24px 18px 18px;
+      }
+
+      .overlay {
+        align-items: end;
+        padding: 10px;
+      }
+
+      .tooltip {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <header>
+      <p class="eyebrow">A woodland clearing celebration</p>
+
+      <h1>Syl's Birthday</h1>
+
+      <p class="date">
+        Sunday, 27 September · Tap the objects to discover every detail.
+      </p>
+    </header>
+
+    <section
+      class="scene"
+      aria-label="Interactive woodland birthday scene"
+    >
+
+      <button
+        class="hotspot"
+        data-id="party"
+        data-title="Syl's Bday Party"
+        data-eyebrow="A woodland gathering"
+        data-body="A soft, golden afternoon in the forest clearing with good food, games, and friends gathered close."
+        data-lines="Birthday|28.09.1998 · Libra;Event date|Sunday, 27 September;Time|14:30 till late"
+        data-footnote="Bring a bottle, some food, or send an MBWay."
+        style="left: 13%; top: 51%; width: 28%; height: 27%;"
+        aria-label="Party details"
+      >
+        <span
+          class="marker"
+          style="background: #d4789d"
+        >+</span>
+
+        <span class="tooltip">
+          Party details
+        </span>
+      </button>
+
+
+      <button
+        class="hotspot"
+        data-id="location"
+        data-title="Where the moss grows"
+        data-eyebrow="Find the clearing"
+        data-body="Follow the map into the trees and look for the sunniest clearing."
+        data-lines="Address|Parque Natural de Sintra-Cascais, Estr. da Serra, Alcabideche;Plus code|QH3V+CX4 Alcabideche;Coordinates|38.753528, -9.405056"
+        data-action="Open directions in Google Maps"
+        style="left: 81%; top: 22%; width: 25%; height: 25%;"
+        aria-label="Location"
+      >
+        <span
+          class="marker"
+          style="background: #9fbeac"
+        >+</span>
+
+        <span class="tooltip">
+          Location
+        </span>
+      </button>
+
+
+      <button
+        class="hotspot"
+        data-id="dress"
+        data-title="Dress code"
+        data-eyebrow="What to wear"
+        data-body="We are still weaving this one together."
+        data-lines="Status|To be updated"
+        data-footnote="Think soft layers and shoes made for wandering, for now."
+        style="left: 87%; top: 57%; width: 24%; height: 38%;"
+        aria-label="Dress code"
+      >
+        <span
+          class="marker"
+          style="background: #e5b4d4"
+        >+</span>
+
+        <span class="tooltip">
+          Dress code
+        </span>
+      </button>
+
+
+      <button
+        class="hotspot"
+        data-id="games"
+        data-title="Games"
+        data-eyebrow="Play in the clearing"
+        data-body="The games are still being chosen — expect something playful once the sun starts to dip."
+        data-lines="Status|To be updated"
+        style="left: 58%; top: 83%; width: 28%; height: 22%;"
+        aria-label="Games"
+      >
+        <span
+          class="marker"
+          style="background: #b5b4d6"
+        >+</span>
+
+        <span class="tooltip">
+          Games
+        </span>
+      </button>
+
+
+      <button
+        class="hotspot"
+        data-id="rsvp"
+        data-title="RSVP / Arrival Poll"
+        data-eyebrow="Help us plan"
+        data-body="Choose the time you plan to arrive. Your choice is only a guide — please message us directly too."
+        data-poll="14:30 – 19:00|15:30 – 19:00|19:00 – 00:00"
+        style="left: 12%; top: 82%; width: 24%; height: 22%;"
+        aria-label="Arrival poll"
+      >
+        <span
+          class="marker"
+          style="background: #d4789d"
+        >+</span>
+
+        <span class="tooltip">
+          Arrival poll
+        </span>
+      </button>
+
+
+      <button
+        class="hotspot"
+        data-id="rules"
+        data-title="House rules"
+        data-eyebrow="A tiny woodland rule"
+        data-body="Phones will be asked to go in a box — not on silent."
+        data-lines="Why|In case someone calls or texts, it can be heard."
+        data-footnote="A little offline magic for everyone."
+        style="left: 48%; top: 18%; width: 22%; height: 28%;"
+        aria-label="House rules"
+      >
+        <span
+          class="marker"
+          style="background: #a46182"
+        >+</span>
+
+        <span class="tooltip">
+          House rules
+        </span>
+      </button>
+
+    </section>
+
+    <p class="progress" id="progress">
+      6 things to discover — look for the glowing dots.
+    </p>
+
+  </main>
+
+
+  <div id="modal-root" hidden></div>
+
+
+  <script>
+    const hotspots = document.querySelectorAll(".hotspot");
+    const progress = document.querySelector("#progress");
+    const modalRoot = document.querySelector("#modal-root");
+    const visited = new Set();
+
+
+    function updateProgress() {
+      if (visited.size === 0) {
+        progress.textContent =
+          "6 things to discover — look for the glowing dots.";
+        return;
+      }
+
+      if (visited.size === hotspots.length) {
+        progress.textContent =
+          "You've found everything. See you at the party!";
+        return;
+      }
+
+      progress.textContent =
+        `${visited.size} of ${hotspots.length} discovered — keep exploring.`;
+    }
+
+
+    function openModal(button) {
+      visited.add(button.dataset.id);
+      button.classList.add("seen");
+      updateProgress();
+
+      const data = button.dataset;
+
+      const lines = data.lines
+        ? data.lines
+            .split(";")
+            .map(item => {
+              const [label, value] = item.split("|");
+
+              return `
+                <div class="row">
+                  <dt>${label}</dt>
+                  <dd>${value}</dd>
+                </div>
+              `;
+            })
+            .join("")
+        : "";
+
+
+      const poll = data.poll
+        ? `
+          <div class="poll">
+
+            <p class="poll-title">
+              What time do you plan to arrive?
+            </p>
+
+            ${data.poll
+              .split("|")
+              .map(
+                option => `
+                  <button class="poll-option">
+                    ${option}
+                  </button>
+                `
+              )
+              .join("")}
+
+            <p class="note">
+              Please message us your choice directly —
+              this is just to help you commit!
+            </p>
+
+          </div>
+        `
+        : "";
+
+
+      const action = data.action
+        ? `
+          <a
+            class="action"
+            target="_blank"
+            rel="noopener"
+            href="https://www.google.com/maps/dir/?api=1&destination=38.753528,-9.405056"
+          >
+            ${data.action}
+          </a>
+        `
+        : "";
+
+
+      const marker = button.querySelector(".marker");
+
+      modalRoot.innerHTML = `
+        <div
+          class="overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+        >
+
+          <article class="modal">
+
+            <div class="modal-head">
+
+              <div
+                class="icon"
+                style="background: ${marker.style.backgroundColor}"
+              >
+                ✦
+              </div>
+
+              <div>
+                <p class="eyebrow">
+                  ${data.eyebrow}
+                </p>
+
+                <h2 id="modal-title">
+                  ${data.title}
+                </h2>
+              </div>
+
+              <button
+                class="close"
+                aria-label="Close"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <p class="body">
+              ${data.body}
+            </p>
+
+
+            ${
+              lines
+                ? `
+                  <dl>
+                    ${lines}
+                  </dl>
+                `
+                : ""
+            }
+
+
+            ${action}
+
+            ${poll}
+
+
+            ${
+              data.footnote
+                ? `
+                  <p class="note">
+                    ${data.footnote}
+                  </p>
+                `
+                : ""
+            }
+
+
+            <button class="back">
+              Back to the party
+            </button>
+
+          </article>
+
+        </div>
+      `;
+
+
+      modalRoot.hidden = false;
+      document.body.style.overflow = "hidden";
+
+
+      modalRoot.querySelector(".close").focus();
+
+
+      modalRoot
+        .querySelectorAll(".poll-option")
+        .forEach(option => {
+
+          option.addEventListener("click", () => {
+
+            modalRoot
+              .querySelectorAll(".poll-option")
+              .forEach(item => {
+                item.classList.remove("selected");
+              });
+
+            option.classList.add("selected");
+          });
+
+        });
+
+
+      modalRoot
+        .querySelector(".overlay")
+        .addEventListener("click", event => {
+
+          if (event.target.classList.contains("overlay")) {
+            closeModal();
+          }
+
+        });
+
+
+      modalRoot
+        .querySelector(".close")
+        .addEventListener("click", closeModal);
+
+
+      modalRoot
+        .querySelector(".back")
+        .addEventListener("click", closeModal);
+    }
+
+
+    function closeModal() {
+      modalRoot.hidden = true;
+      modalRoot.innerHTML = "";
+      document.body.style.overflow = "";
+    }
+
+
+    hotspots.forEach(button => {
+      button.addEventListener("click", () => {
+        openModal(button);
+      });
+    });
+
+
+    document.addEventListener("keydown", event => {
+
+      if (
+        event.key === "Escape" &&
+        !modalRoot.hidden
+      ) {
+        closeModal();
+      }
+
+    });
+  </script>
+
+</body>
+</html>
 ```
