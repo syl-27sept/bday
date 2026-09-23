@@ -1,0 +1,266 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Syl's Birthday</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   COLORS & TYPE
+   ============================================================ */
+
+:root {
+  --bg: #F6E9D8;
+  --bg-deep: #F0D9B8;
+  --gold: #D99A3D;
+  --cream: #4A3B2A;
+  --rose: #E0A6B0;
+  --lav: #B9A8D9;
+  --sage: #7C9470;
+  --panel: #FFF8EE;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--cream);
+  overflow-x: hidden;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+h1,
+h2,
+.display {
+  font-family: 'Fraunces', serif;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.header {
+  text-align: center;
+  padding: 2.2rem 1rem 1rem;
+}
+
+.header h1 {
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  margin: 0 0 0.3rem;
+  font-weight: 600;
+}
+
+.header p {
+  margin: 0;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+}
+
+.header .kicker {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 0.4rem;
+}
+
+/* ============================================================
+   MAIN SCENE
+   ============================================================ */
+
+.scene-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+#scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 82% 14%,
+      #FFF3D666 0%,
+      transparent 22%
+    ),
+    linear-gradient(
+      180deg,
+      #FBE6C2 0%,
+      var(--bg) 45%,
+      var(--bg-deep) 100%
+    );
+  box-shadow: 0 20px 50px -25px #7a5a2a55;
+}
+
+/* Simple placeholder illustration pieces */
+
+.sun {
+  position: absolute;
+  top: 9%;
+  right: 16%;
+  width: 13%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #FFE9B8;
+  box-shadow: 0 0 40px 10px #FFE9B899;
+}
+
+.foliage {
+  position: absolute;
+  top: -4%;
+  left: -4%;
+  right: -4%;
+  height: 22%;
+  background: var(--sage);
+  opacity: 0.55;
+  border-radius: 0 0 60% 60% / 0 0 100% 100%;
+}
+
+.drape {
+  position: absolute;
+  top: 0;
+  width: 16%;
+  height: 60%;
+  background: linear-gradient(
+    180deg,
+    var(--lav)aa 0%,
+    var(--rose)88 55%,
+    transparent 100%
+  );
+  border-radius: 0 0 50% 50%;
+  opacity: 0.75;
+}
+
+.drape.d1 {
+  left: 14%;
+}
+
+.drape.d2 {
+  left: 38%;
+  height: 48%;
+}
+
+.drape.d3 {
+  right: 20%;
+}
+
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    #C9A15E33
+  );
+}
+
+/* ============================================================
+   HOTSPOTS
+   ============================================================ */
+
+.hotspot {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(
+    circle,
+    #FFF8E6 0%,
+    #D99A3D77 55%,
+    transparent 75%
+  );
+  cursor: pointer;
+  animation: pulse 2.6s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hotspot:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   MODAL / PANEL
+   ============================================================ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: #0B140Fcc;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+  padding: 0;
+}
+
+.overlay.open {
+  display: flex;
+}
+
+@media (min-width: 640px) {
+  .overlay {
+    align-items: center;
+  }
+}
+
+.panel {
+  background: var(--panel);
+  width: 100%;
+  max-width: 460px;
+  border-radius: 20px 20px 0 0;
+  padding: 1.6rem 1.5rem
+    calc(1.6rem + env(safe-area-inset-bottom, 0px));
+  transform: translateY(30px);
+  opacity: 0;
+  transition: 0.25s ease;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 640px) {
+  .panel {
+    border-radius:
+```
