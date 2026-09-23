@@ -91,18 +91,16 @@
     }
 
     
-    .scene {
-      position: relative;
-      overflow: hidden;
-       aspect-ratio: 16 / 9;
-      border-radius: 28px;
-      background:
-        #cbd8ca
-        url("syl-woodland.jpg")
-        center / cover
-        no-repeat;
+      .scene {
+  position: relative;
+  width: 100%;
+}
 
-    }
+.scene > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
     .hotspot {
       position: absolute;
@@ -416,8 +414,9 @@
 
     <section
       class="scene"
-      aria-label="Interactive woodland birthday scene"
-    >
+   aria-label="Interactive woodland birthday scene"
+>
+  <img src="syl-woodland.jpg" alt="">    >
 
       <button
         class="hotspot"
