@@ -127,15 +127,20 @@ h1 {
   object-position: center;
 }
 
-    .hotspot {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      border: 0;
-      padding: 0;
-      background: transparent;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
+.hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+  width: 56px;
+  height: 56px;
+
+  border: 0;
+  padding: 0;
+  background: transparent;
+
+  cursor: pointer;
+  touch-action: manipulation;
+}
 
 .marker {
   position: absolute;
@@ -621,8 +626,9 @@ data-y="646";
 
 
   <script>
-    const hotspots = document.querySelectorAll(".hotspot");
-    const scene = document.querySelector(".scene");
+   const hotspots = document.querySelectorAll(".hotspot");
+
+const scene = document.querySelector(".scene");
 const sceneImage = scene.querySelector("img");
 
 const IMAGE_WIDTH = 1920;
@@ -634,7 +640,7 @@ function positionHotspots() {
 
   if (!sceneWidth || !sceneHeight) return;
 
-  // Calculate how object-fit: cover displays the image.
+  // Calculate the scale used by object-fit: cover
   const scale = Math.max(
     sceneWidth / IMAGE_WIDTH,
     sceneHeight / IMAGE_HEIGHT
@@ -642,10 +648,8 @@ function positionHotspots() {
 
   const displayedWidth = IMAGE_WIDTH * scale;
   const displayedHeight = IMAGE_HEIGHT * scale;
-    const displayedWidth = IMAGE_WIDTH * scale;
-  const displayedHeight = IMAGE_HEIGHT * scale;
 
-  // object-position: center
+  // Because object-position is center
   const offsetX = (sceneWidth - displayedWidth) / 2;
   const offsetY = (sceneHeight - displayedHeight) / 2;
 
@@ -653,12 +657,21 @@ function positionHotspots() {
     const x = Number(hotspot.dataset.x);
     const y = Number(hotspot.dataset.y);
 
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+
     const screenX = x * scale + offsetX;
     const screenY = y * scale + offsetY;
 
     hotspot.style.left = `${screenX}px`;
     hotspot.style.top = `${screenY}px`;
   });
+}
+
+window.addEventListener("resize", positionHotspots);
+
+sceneImage.addEventListener("load", positionHotspots);
+
+positionHotspots();
 }
 
 window.addEventListener("resize", positionHotspots);
