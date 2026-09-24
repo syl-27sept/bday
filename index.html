@@ -1,3 +1,4 @@
+<html>
 <!doctype html>
 <html lang="en">
 
@@ -21,50 +22,45 @@
       box-sizing: border-box;
     }
 
-   body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--granite);
-
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--granite);
   font-family: -apple-system, BlinkMacSystemFont,
     "SF Pro Text", "SF Pro Display", sans-serif;
+        }
 
-  background:
-    radial-gradient(
-      circle at 12% 18%,
-      rgba(219, 178, 186, 0.25) 0 2px,
-      transparent 3px
-    ),
-    radial-gradient(
-      circle at 82% 12%,
-      rgba(154, 163, 136, 0.25) 0 2px,
-      transparent 3px
-    ),
-    linear-gradient(135deg, #dddadb, #f3e8e8);
+  h1,
+  .modal h2 {
+    font-family: Georgia, serif;
+      background:
+        radial-gradient(
+          circle at 12% 18%,
+          rgba(219, 178, 186, 0.25) 0 2px,
+          transparent 3px
+        ),
+        radial-gradient(
+          circle at 82% 12%,
+          rgba(154, 163, 136, 0.25) 0 2px,
+          transparent 3px
+        ),
+        linear-gradient(135deg, #dddadb, #f3e8e8);
+      background-size: 34px 34px, 48px 48px, auto;
+    }
 
-  background-size: 34px 34px, 48px 48px, auto;
-}
-
-h1,
-.modal h2 {
-  font-family: Georgia, serif;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.14;
-
-  background-image:
-    radial-gradient(
-      rgba(64, 93, 88, 0.35) 0.6px,
-      transparent 0.6px
-    );
-
-  background-size: 5px 5px;
-}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.14;
+      background-image:
+        radial-gradient(
+          rgba(64, 93, 88, 0.35) 0.6px,
+          transparent 0.6px
+        );
+      background-size: 5px 5px;
+    }
 
     .page {
   position: relative;
@@ -141,9 +137,8 @@ h1 {
   position: absolute;
   transform: translate(-50%, -50%);
 
-  width: 68px;
-    height: 68px;
-
+  width: 56px;
+  height: 56px;
 
   border: 0;
   padding: 0;
@@ -179,14 +174,14 @@ h1 {
   inset: 0;
   display: grid;
   place-items: center;
-  font: 22px/1 Georgia, serif;
+  font: 20px/1 Georgia, serif;
 }
 
 .marker::after {
   content: "";
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: rgba(255, 248, 220, 0.9);
   box-shadow: 0 0 7px rgba(255, 236, 184, 0.9);
@@ -937,5 +932,3 @@ positionHotspots();
 
 </body>
 </html>
-
-
