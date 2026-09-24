@@ -96,26 +96,39 @@
     }
 
     
-      .scene {
+  .scene {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
   width: 100vw;
   margin-left: calc(50% - 50vw);
+  isolation: isolate;
+  background: #17222d;
   }
-  
-  
+
+  .scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(8, 17, 28, 0.24), rgba(8, 17, 28, 0.38));
+  }
+
   .scene > img {
+  position: relative;
+  z-index: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
-}
+  }
 
-    .hotspot {
-      position: absolute;
-      transform: translate(-50%, -50%);
+  .hotspot {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
       border: 0;
       padding: 0;
       background: transparent;
