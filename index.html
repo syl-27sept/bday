@@ -487,7 +487,8 @@ h1 {
         data-body="We’re taking over a clearing somewhere in the Sintra woods for an afternoon of food, games, questionable amounts of socialising, and whatever happens once the sun goes down."
         data-lines="Date|Sunday, 27 September 2026;Time|14h30 till lateeeee"
         data-footnote="Bring a bottle. Bring something to eat. Or send an MB WAY and let us handle it."
-        style="left: 57%; top: 64.5%;"
+data-x="934"
+  data-y="427";
         aria-label="Party details"
       >
         <span
@@ -509,7 +510,8 @@ h1 {
         data-body="Follow the map into the trees. Look for the clearing with the suspicious amount of sunlight."
         data-lines="Address|<br>Parque Natural de Sintra Cascais,<br>Estr. da Serra, QH3V+CX4 Alcabideche<br>38.753528, -9.405056<br>"
         data-action="Open in Google Maps"
-        style="left: 93.5%; top: 34.5%;"
+        data-x="1321"
+data-y="563";
         aria-label="Location"
       >
         <span
@@ -530,7 +532,8 @@ h1 {
         data-eyebrow="What to wear"
         data-body="We haven't decided yet.."
         data-footnote="For now: soft layers, clothes you don't mind sitting on the ground in, and shoes you can actually walk in"
-        style="left: 99%; top: 76%;"
+data-x="678"
+data-y="427"
         aria-label="Dress code"
       >
         <span
@@ -551,7 +554,8 @@ h1 {
         data-eyebrow="Something is being planned."
         data-body="Details coming soon."
         data-lines="Status|There will be games. There may be a little competition. Mostly, there will be good sportsmanship. Probably."
-        style="left: 72%; top: 94%;"
+        data-x="560"
+data-y="672";
         aria-label="Games"
       >
         <span
@@ -572,9 +576,10 @@ h1 {
   data-eyebrow="Choose your arrival window."
   data-body=""
   data-poll="14:30 - 19:00|15:30 - 19:00|19:00 - 00:00"
+        data-x="1295"
+data-y="230";
   aria-label="Arrival poll"
-  style="left: 67%; top: 31%; width: 16%; height: 18%;"
->
+        >
   <span class="marker" style="background: #d4789d">+</span>
   <span class="tooltip">Arrival poll</span>
 </button>
@@ -589,7 +594,8 @@ h1 {
         data-body="Phones will be asked to go in a box — not on silent."
         data-lines="Why|In case someone calls or texts, it can be heard."
         data-footnote="A little offline magic for everyone."
-        style="left: 48%; top: 18%; width: 22%; height: 28%;"
+data-x="805"
+data-y="646";
         aria-label="House rules"
       >
         <span
@@ -616,6 +622,50 @@ h1 {
 
   <script>
     const hotspots = document.querySelectorAll(".hotspot");
+    const scene = document.querySelector(".scene");
+const sceneImage = scene.querySelector("img");
+
+const IMAGE_WIDTH = 1920;
+const IMAGE_HEIGHT = 990;
+
+function positionHotspots() {
+  const sceneWidth = scene.clientWidth;
+  const sceneHeight = scene.clientHeight;
+
+  if (!sceneWidth || !sceneHeight) return;
+
+  // Calculate how object-fit: cover displays the image.
+  const scale = Math.max(
+    sceneWidth / IMAGE_WIDTH,
+    sceneHeight / IMAGE_HEIGHT
+  );
+
+  const displayedWidth = IMAGE_WIDTH * scale;
+  const displayedHeight = IMAGE_HEIGHT * scale;
+    const displayedWidth = IMAGE_WIDTH * scale;
+  const displayedHeight = IMAGE_HEIGHT * scale;
+
+  // object-position: center
+  const offsetX = (sceneWidth - displayedWidth) / 2;
+  const offsetY = (sceneHeight - displayedHeight) / 2;
+
+  hotspots.forEach(hotspot => {
+    const x = Number(hotspot.dataset.x);
+    const y = Number(hotspot.dataset.y);
+
+    const screenX = x * scale + offsetX;
+    const screenY = y * scale + offsetY;
+
+    hotspot.style.left = `${screenX}px`;
+    hotspot.style.top = `${screenY}px`;
+  });
+}
+
+window.addEventListener("resize", positionHotspots);
+
+sceneImage.addEventListener("load", positionHotspots);
+
+positionHotspots();
     const progress = document.querySelector("#progress");
     const modalRoot = document.querySelector("#modal-root");
     const visited = new Set();
