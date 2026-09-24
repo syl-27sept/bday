@@ -117,36 +117,41 @@
       left: 50%;
       top: 50%;
       display: grid;
-      width: 32px;
-      height: 32px;
+      width: 22px;
+      height: 22px;
       place-items: center;
       transform: translate(-50%, -50%);
-      border: 2px solid rgba(255, 255, 255, 0.85);
+      border: 0;
       border-radius: 50%;
-      color: white;
-      font: 24px/1 Arial, sans-serif;
-      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
-      animation: bob 3s ease-in-out infinite;
+      color: rgba(255, 250, 232, 0.94);
+      background: transparent !important;
+      font: 0/1 Arial, sans-serif;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 232, 181, 0.72);
+      animation: sparkle 3.2s ease-in-out infinite;
     }
 
     .marker::before {
-      content: "";
+      content: "✦";
       position: absolute;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: inherit;
-      animation: ping 2.4s infinite;
-      z-index: -1;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font: 20px/1 Georgia, serif;
     }
 
-    .hotspot.seen .marker::before {
-      display: none;
+    .marker::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255, 248, 220, 0.9);
+      box-shadow: 0 0 7px rgba(255, 236, 184, 0.9);
     }
 
     .hotspot:hover .marker,
     .hotspot:focus-visible .marker {
-      transform: translate(-50%, -50%) scale(1.12);
+      transform: translate(-50%, -50%) scale(1.2);
     }
 
     .tooltip {
@@ -334,7 +339,20 @@
       }
     }
 
-    @keyframes fade {
+    @keyframes sparkle {
+  0%,
+  100% {
+  opacity: 0.52;
+  transform: translate(-50%, -50%) scale(0.86) rotate(0deg);
+  }
+
+  50% {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.08) rotate(10deg);
+  }
+  }
+
+  @keyframes fade {
       from {
         opacity: 0;
       }
