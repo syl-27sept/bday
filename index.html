@@ -649,7 +649,6 @@ data-y="646"
     </section>
 
     <p class="progress" id="progress">
-      6 clues to uncover - look for the glowing dots
     </p>
 
   </main>
@@ -715,23 +714,21 @@ positionHotspots();
     const modalRoot = document.querySelector("#modal-root");
     const visited = new Set();
 
+function updateProgress() {
+  if (visited.size === 0) {
+    progress.textContent = "";
+    return;
+  }
 
-    function updateProgress() {
-      if (visited.size === 0) {
-        progress.textContent =
-          "6 clues to uncover — look for the glowing dots..";
-        return;
-      }
+  if (visited.size === hotspots.length) {
+    progress.textContent =
+      "You've found everything. See you at the party!";
+    return;
+  }
 
-      if (visited.size === hotspots.length) {
-        progress.textContent =
-          "You've found everything. See you at the party!";
-        return;
-      }
-
-      progress.textContent =
-        `${visited.size} of ${hotspots.length} discovered — keep exploring.`;
-    }
+  progress.textContent =
+    "6 clues to uncover - look for the glowing dots";
+}
 
 
     function openModal(button) {
