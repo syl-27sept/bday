@@ -758,32 +758,32 @@ function updateProgress() {
 
 
       const poll = data.poll
-        ? `
-          <div class="poll">
+  ? `
+    <div class="poll">
 
-            <p class="poll-title">
-              What time do you plan to arrive?
-            </p>
+      <p class="poll-title">
+        What time do you plan to arrive, realistically?
+      </p>
 
-            ${data.poll
-              .split("|")
-              .map(
-                option => `
-                  <button class="poll-option">
-                    ${option}
-                  </button>
-                `
-              )
-              .join("")}
+      ${data.poll
+        .split("|")
+        .map(
+          option => `
+            <button class="poll-option">
+              ${option}
+            </button>
+          `
+        )
+        .join("")}
 
-            <p class="note">
-              Please message us your choice directly —
-              this is just to help you commit!
-            </p>
-
-          </div>
-        `
-        : "";
+      <p class="note" id="poll-note" hidden>
+        This is just to help you commit!<br>
+        Please message me directly if any delays happen.
+      </p>
+      
+    </div>
+  `
+  : "";
 
 
       const action = data.action
@@ -890,22 +890,29 @@ function updateProgress() {
       modalRoot.querySelector(".close").focus();
 
 
+modalRoot
+  .querySelectorAll(".poll-option")
+  .forEach(option => {
+
+    option.addEventListener("click", () => {
+
       modalRoot
         .querySelectorAll(".poll-option")
-        .forEach(option => {
-
-          option.addEventListener("click", () => {
-
-            modalRoot
-              .querySelectorAll(".poll-option")
-              .forEach(item => {
-                item.classList.remove("selected");
-              });
-
-            option.classList.add("selected");
-          });
-
+        .forEach(item => {
+          item.classList.remove("selected");
         });
+
+      option.classList.add("selected");
+
+      const pollNote = modalRoot.querySelector("#poll-note");
+
+ 
+      if (pollNote) {
+        pollNote.hidden = false;
+      }
+    });
+
+  });
 
 
       modalRoot
